@@ -1,0 +1,32 @@
+{
+  "name": "qbox-project",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.4",
+    "@material-ui/icons": "^4.11.3",
+    "@material-ui/lab": "^4.0.0-alpha.61",
+    "@material-ui/system": "^4.12.2",
+    "@react-spring/web": "^9.4.5",
+    "axios": "^0.27.2",
+    "firebase": "^8.6.1",
+    "firebase-admin": "^11.0.0",
+    "js-sha512": "^0.8.0",
+    "next": "12.1.6",
+    "next-auth": "^4.5.0",
+    "nookies": "^2.5.2",
+    "playwright-aws-lambda": "^0.8.0",
+    "react": "18.1.0",
+    "react-dom": "18.1.0"
+  },
+  "devDependencies": {
+    "eslint": "8.17.0",
+    "eslint-config-next": "12.1.6"
+  }
+}

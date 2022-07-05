@@ -1,0 +1,180 @@
+.container {
+  padding: 0 2rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding: 1rem 0 4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.footer {
+  display: flex;
+  flex: 1;
+  margin: 2rem 0 0;
+  padding: 2rem 0;
+  border-top: 2px solid #3e283e;
+  justify-content: center;
+  align-items: center;
+  background-color: #cdcbcd;
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.title a {
+  color: #0070f3;
+  text-decoration: none;
+}
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  text-align: center;
+}
+
+.description {
+  margin: 4rem 0;
+  line-height: 1.5;
+  font-size: 1.5rem;
+}
+
+.logo {
+  height: 1em;
+  margin-left: 0.5rem;
+}
+
+.pagebg {
+  background-color: #ddecd1;
+  background-image:
+   linear-gradient(-90deg, rgba(192, 224, 216, 0.5) 50%, transparent 50%),
+    linear-gradient(rgba(218, 226, 197, 0.5) 50%, transparent 50%);
+  background-size: 6px 6px;
+}
+
+.appbar {
+  background: #969B11 !important;
+  color: #fff !important;
+}
+
+.sendButton {
+  margin: 0 auto 1rem;
+  width: 26.4rem;
+}
+
+.qwidth {
+  width: 26.4rem;
+}
+
+.qsheetbg {
+  background-color: #b89e7c;
+  margin: 1rem auto 0.5rem;
+  width: 26.4rem;
+  transition: background-color .3s;
+}
+
+.qsheetbg.hov:hover {
+  background-color: #987e5c;
+}
+
+.qsheetTextfield {
+  background: #f5eedc;
+  margin: 0.7rem 0.7rem 0 !important;
+  padding: 1rem 1rem 0.8rem !important;
+  border-radius: 20px;
+  width: 25rem;
+  min-height: 10em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.qsheetbottom {
+  display: flex;
+  align-items: center;
+  margin: 0 0.3rem auto;
+}
+
+/* スマホ用 */
+@media (max-width: 490px) {
+  .container {
+    padding: 0 0;
+  }
+
+  .sendButton {
+    margin: 0 auto 1rem;
+    width: calc(100% - 10px);
+    max-width: 26.4rem;
+  }
+
+  .qwidth {
+    width: calc(100% - 10px);
+    max-width: 26.4rem;
+  }
+  
+  .qsheetbg {
+    background-color: #b89e7c;
+    margin: 1rem auto 0.5rem;
+    width: calc(100% - 10px);
+    max-width: 26.4rem;
+  }
+
+  .qsheetTextfield {
+    background: #f5eedc;
+    margin: 0.7rem 0.7rem 0 !important;
+    padding: 1rem 1rem 0.8rem !important;
+    border-radius: 20px;
+    width: -webkit-calc(100% - 1.4rem);
+    width: calc(100% - 1.4rem);
+    min-height: 10em;
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+
+
+.ogpqsheetbg {
+  background-color: #b89e7c;
+  margin: 1rem auto 0.5rem;
+  width: calc(26.4rem *1200/528);
+  height: calc(26.4rem *630/528);
+}
+
+.ogpqsheetTextfield {
+  background: #f5eedc;
+  margin: calc(0.7rem *1200/528) calc(0.7rem *1200/528) 0 !important;
+  padding: calc(1rem *1200/528) calc(1rem *1200/528) 0.8rem !important;
+  border-radius: calc(20px *1200/528);
+  width: calc(26.4rem *1200/528 - 1.4rem *1200/528);
+  min-height: calc(26.4rem *630/528 - 0.7rem *1200/528 - 26.4rem *45/528 *1200/528);
+  display: flex; 
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ogpqsheetbottom {
+  display: flex;
+  align-items: center;
+  margin: 0 calc(0.3rem *1200/528) auto;
+}
