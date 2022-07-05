@@ -6,7 +6,7 @@ import SendIcon from '@material-ui/icons/Send';
 import { useSpring, animated, easings } from "@react-spring/web";
 import styles from "../styles/Home.module.css";
 
-export default function inputForm(){
+export default function InputForm(){
     const [comment, setComment] = useState('');
     
     // 送信アニメーション
