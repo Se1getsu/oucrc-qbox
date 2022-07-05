@@ -3,6 +3,9 @@ import { useState } from "react";
 import QSheet from "./QSheet";
 
 export default function QAList({qaList, mode}){
+    const [page, setPage] = useState(1);
+    const numofDisp = 20;
+
     var exqaList;
     if(mode == 'answered'){
         exqaList = qaList.filter(qaData => qaData.answer);
@@ -11,9 +14,6 @@ export default function QAList({qaList, mode}){
     }else{
         return ( <p>- QAListUndefinedModeError -</p> )
     }
-
-    const [page, setPage] = useState(1);
-    const numofDisp = 20;
     
     return (
         <div style={{
