@@ -30,6 +30,3 @@ yarn-error.log*
 
 # vercel
 .vercel
-
-# 暗号鍵
-qbox-project-firebase-adminsdk-jl15c-3f33fbd0f3.json

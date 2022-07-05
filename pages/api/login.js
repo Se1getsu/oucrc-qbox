@@ -2,7 +2,7 @@ import sha512, { sha512_256 } from 'js-sha512';
 
 const { cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
-const serviceAccount = require('../../qbox-project-firebase-adminsdk-jl15c-3f33fbd0f3.json'); //秘密鍵取得
+const serviceAccount = require('../../firebase'); //秘密鍵取得
 const admin = require('firebase-admin');
 
 export default async function handler(req, res) {
