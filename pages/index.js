@@ -29,11 +29,11 @@ export default function Home({qaList}) {
             "トップページでは既に回答がついた質問の一覧を見ることもできます。"
           }
         />
-        <meta property='og:url' content='https://oucrc-qbox.vercel.app' />
+        <meta property='og:url' content={process.env.BASE_URL} />
         <meta property='og:title' content='岡大電算研質問箱' />
         <meta property='og:type' content='website' />
         <meta property='og:description' content='岡山大学のコンピュータ系部活である「岡山大学電子計算機研究会（OUCRC）」のオリジナル質問箱です。' />
-        <meta property='og:image' content='https://oucrc-qbox.vercel.app/images/ogptop.png' />
+        <meta property='og:image' content={process.env.BASE_URL + '/images/ogptop.png'} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name='twitter:title' content='岡大電算研質問箱' />
         <meta name='twitter:description' content='岡山大学のコンピュータ系部活である「岡山大学電子計算機研究会（OUCRC）」のオリジナル質問箱です。' />

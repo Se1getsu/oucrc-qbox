@@ -6,7 +6,7 @@ const styles = `
     width: 100%;
     height: 100%;
     display: grid;
-    background-image: url(http://localhost:3000/images/ogpsheet.png);
+    background-image: url(${process.env.BASE_URL}/images/ogpsheet.png);
     transform: translateX(-4px) translateY(-4px);
   }
 

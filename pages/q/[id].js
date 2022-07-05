@@ -42,7 +42,7 @@ export default function Post({sid, qaData}){
                     <link rel="icon" href="/oucrc.ico" />
                     <meta charSet='utf-8' />
                     <meta name="description" content={"岡大電算研への質問：" + qaData.question} />
-                    <meta property='og:url' content='https://oucrc-qbox.vercel.app' />
+                    <meta property='og:url' content={process.env.BASE_URL} />
                     <meta property='og:title' content='岡大電算研質問箱' />
                     <meta property='og:type' content='website' />
                     <meta property='og:description' content='岡大電算研（OUCRC）が質問に回答しました。' />
