@@ -30,3 +30,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# 環境変数
+/env/env.local.json

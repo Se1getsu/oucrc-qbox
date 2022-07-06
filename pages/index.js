@@ -9,7 +9,7 @@ import Layout from '../components/Layout'
 styles.card は質問の一覧表示の所で使えそう。
 */
 
-export async function getStaticProps(){
+export async function getServerSideProps(){
   const qaList = await getSortedQAList();
   return {props: {qaList}};
 }
