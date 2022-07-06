@@ -55,7 +55,7 @@ const Content = ({text}) => (
 export default async (req, res) => {
 
   // ブラウザインスタンスの生成
-  const browser = await playwright.launchChromium();
+  const browser = await playwright.launchChromium({ignoreDefaultArgs: ['--disable-extensions']});
   const viewport = { width: 1200, height: 630 };
   const page = await browser.newPage({ viewport });
 
