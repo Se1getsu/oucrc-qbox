@@ -36,6 +36,7 @@ const styles = `
 const Content = ({text}) => (
   <html>
     <head>
+      <link rel="icon" href="/oucrc.ico" />
       <style>{styles}</style>
       <meta charSet='utf-8' />
     </head>
