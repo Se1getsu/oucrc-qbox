@@ -18,7 +18,7 @@ export default function Home({qaList}) {
   return (
     <Layout>
       <Head>
-        <title>電算研質問箱v12</title>
+        <title>電算研質問箱</title>
         <link rel="icon" href="/oucrc.ico" />
         <meta charSet='utf-8' />
         <meta

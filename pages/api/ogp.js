@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/server";
 import * as playwright from "playwright-aws-lambda";
+const chrome = require('chrome-aws-lambda');
 const isDev = process.env.RUN_ENV == 'Local';
 
 const styles = `
@@ -58,7 +59,8 @@ async function getLaunchOptions() {
     return {};
   }else{
     return {
-      channel: 'chrome'
+      args: chrome.args,
+      executablePath: await chrome.executablePath
     }
   }
 }
@@ -66,11 +68,8 @@ async function getLaunchOptions() {
 export default async (req, res) => {
 
   // ブラウザインスタンスの生成
-  console.log(1,'ok');
   const launchOptions = await getLaunchOptions();
-  console.log(2,launchOptions);
   const browser = await playwright.launchChromium(launchOptions);
-  console.log(3,'Launch successed.');
   const viewport = { width: 1200, height: 630 };
   const page = await browser.newPage({ viewport });
 
