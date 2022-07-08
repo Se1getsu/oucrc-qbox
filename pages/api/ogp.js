@@ -42,10 +42,10 @@ const Content = ({text}) => (
     </head>
     <body>
       <p className="bg">
-        {text.split('\n').map((textline) => (
-            <>
+        {text.split('\n').map((textline, index) => (
+            <span key={index}>
                 {textline}<br />
-            </>
+            </span>
         ))}
       </p>
     </body>
@@ -60,7 +60,8 @@ export default async (req, res) => {
   const page = await browser.newPage({ viewport });
 
   // HTMLの生成
-  const props = { text: req.query.text };
+  const text = req.query.text ? req.query.text : '';
+  const props = { text };
   const markup = ReactDOM.renderToStaticMarkup(<Content {...props} />);
   const html = `<!doctype html>${markup}`;
   if(0){
