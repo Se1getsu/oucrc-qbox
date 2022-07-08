@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/server";
 import * as playwright from "playwright-aws-lambda";
-const chrome = require('chrome-aws-lambda');
+import { executablePath } from 'chrome-aws-lambda';
 const isDev = process.env.RUN_ENV == 'Local';
 
 const styles = `
@@ -59,8 +59,7 @@ async function getLaunchOptions() {
     return {};
   }else{
     return {
-      args: chrome.args,
-      executablePath: await chrome.executablePath
+      executablePath: await executablePath
     }
   }
 }
