@@ -1,6 +1,6 @@
 import ReactDOM from "react-dom/server";
-import * as playwright from "playwright-aws-lambda";
-const isDev = process.env.RUN_ENV == 'Local';
+const nodeHtmlToImage = require("node-html-to-image");
+const Jimp = require('jimp');
 
 const styles = `
   html, body {
@@ -53,42 +53,30 @@ const Content = ({text}) => (
   </html>
 );
 
-async function getLaunchOptions() {
-  if(isDev){
-    return {};
-  }else{
-    return {
-      ignoreDefaultArgs: ['--disable-extensions']
-    }
-  }
-}
-
 export default async (req, res) => {
-
-  // ブラウザインスタンスの生成
-  const launchOptions = await getLaunchOptions();
-  const browser = await playwright.launchChromium(launchOptions);
-  const viewport = { width: 1200, height: 630 };
-  const page = await browser.newPage({ viewport });
-
-  // HTMLの生成
   const text = req.query.text ? req.query.text : '';
   const props = { text };
   const markup = ReactDOM.renderToStaticMarkup(<Content {...props} />);
   const html = `<!doctype html>${markup}`;
+
   if(0){
     res.setHeader("Content-Type", "text/html");
     res.end(html);
     return;
   }
 
-  // HTMLをセットして、ページの読み込み完了を待つ
-  await page.setContent(html, { waitUntil: "domcontentloaded" });
-  const image = await page.screenshot({ type: "png" });
-  await browser.close();
+  const buffer = await nodeHtmlToImage({
+    html: html,
+    puppeteerArgs: {
+      defaultViewport: {width: 1200, height: 630}
+    }
+  });
 
-  // Vercel Edge Networkのキャッシュを利用するための設定
+  // なぜかbufferの縦横比が1200x630をオーバーしてしまうので、Jimpを使ってトリミング
+  const image = await Jimp.read(buffer);
+  const trimed = await image.crop(0,0,1200,630).getBufferAsync(Jimp.MIME_PNG)
+
   res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate");
   res.setHeader("Content-Type", "image/png");
-  res.end(image);
+  res.end(trimed);
 };

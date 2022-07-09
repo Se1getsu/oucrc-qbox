@@ -14,7 +14,7 @@ export default function Header({sid}) {
 
   return (
     <div style={{"textAlign": "right"}}>
-        <AppBar className={styles.appbar} position="static">
+        <AppBar className={styles.appbar} position="fixed">
           <Toolbar variant="dense">
 
             <Button
