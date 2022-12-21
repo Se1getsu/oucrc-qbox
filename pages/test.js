@@ -1,11 +1,27 @@
 import Head from "next/head";
 import Layout from "../components/Layout";
-import { TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 
 export default function Test(){
     const text = 'こんなページは存在しない。\n分かった？';
+
+    const handleSubmit = async (event) => {
+        console.log("TEST処理開始");
+
+        // const comment = "Hello, second world!";
+        // fetch('/api/comments', {
+        //     method: 'POST',
+        //     mode: 'same-origin',
+        //     credentials: 'same-origin',
+        //     headers: { 'Content-Type': 'application/json; charset=utf-8' },
+        //     body : JSON.stringify({message: comment}),
+        // });
+
+        console.log("TEST処理終了");
+    }
+
     return (
         <Layout>
             <Head>
@@ -32,6 +48,7 @@ export default function Test(){
                         }
                     }}
                 />
+
                 <div className={styles.ogpqsheetbottom}>
                     <Image
                         src='/images/oucrc-logo.webp'
@@ -45,6 +62,8 @@ export default function Test(){
                     />
                 </div>
             </div>
+
+            <Button onClick={handleSubmit}>TEST</Button>
 
         </Layout>
     )

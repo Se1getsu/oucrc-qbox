@@ -1,5 +1,6 @@
 import { getSessionData } from '../../lib/posts';
 import { strftime, timestampTotime } from '../../lib/util';
+import { sendToSlack } from '../../lib/slack';
 
 const { cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
@@ -25,6 +26,10 @@ export default async function handler(req, res) {
       answer: req.body.answer,
     };
     docRef.set(insertData);
+
+    const message = "https://oucrc-qbox.vercel.app に新しい質問が投稿されました。\n```" + req.body.question + "```";
+    await sendToSlack(message);
+
     res.status(200).send('');
 
   } else if (req.method === 'GET') {
