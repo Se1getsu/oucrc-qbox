@@ -1,5 +1,5 @@
-import ReactDOM from "react-dom/server";
-const nodeHtmlToImage = require("node-html-to-image");
+import ReactDOM from 'react-dom/server';
+const nodeHtmlToImage = require('node-html-to-image');
 const Jimp = require('jimp');
 
 const styles = `
@@ -34,19 +34,20 @@ const styles = `
   h1 { margin: auto }
 `;
 
-const Content = ({text}) => (
+const Content = ({ text }) => (
   <html>
     <head>
       <link rel="icon" href="/oucrc.ico" />
       <style>{styles}</style>
-      <meta charSet='utf-8' />
+      <meta charSet="utf-8" />
     </head>
     <body>
       <p className="bg">
         {text.split('\n').map((textline, index) => (
-            <span key={index}>
-                {textline}<br />
-            </span>
+          <span key={index}>
+            {textline}
+            <br />
+          </span>
         ))}
       </p>
     </body>
@@ -59,8 +60,8 @@ export default async (req, res) => {
   const markup = ReactDOM.renderToStaticMarkup(<Content {...props} />);
   const html = `<!doctype html>${markup}`;
 
-  if(0){
-    res.setHeader("Content-Type", "text/html");
+  if (0) {
+    res.setHeader('Content-Type', 'text/html');
     res.end(html);
     return;
   }
@@ -68,15 +69,17 @@ export default async (req, res) => {
   const buffer = await nodeHtmlToImage({
     html: html,
     puppeteerArgs: {
-      defaultViewport: {width: 1200, height: 630}
-    }
+      defaultViewport: { width: 1200, height: 630 },
+    },
   });
 
   // なぜかbufferの縦横比が1200x630をオーバーしてしまうので、Jimpを使ってトリミング
   const image = await Jimp.read(buffer);
-  const trimed = await image.crop(0,0,1200,630).getBufferAsync(Jimp.MIME_PNG)
+  const trimed = await image
+    .crop(0, 0, 1200, 630)
+    .getBufferAsync(Jimp.MIME_PNG);
 
-  res.setHeader("Cache-Control", "s-maxage=31536000, stale-while-revalidate");
-  res.setHeader("Content-Type", "image/png");
+  res.setHeader('Cache-Control', 's-maxage=31536000, stale-while-revalidate');
+  res.setHeader('Content-Type', 'image/png');
   res.end(trimed);
 };

@@ -20,33 +20,29 @@ export default async function handler(req, res) {
   if (req.method === 'GET') {
     const snapshot = await db.collection(COLLECTION_NAME).get();
     const slist = snapshot.docs.map((value, index, array) => {
-      return {id: value.id, ...value.data()};
-    })
+      return { id: value.id, ...value.data() };
+    });
     const nowd = new Date();
-    
+
     //期限切れのセッションをデータベースから削除
-    slist.forEach(async sdata => {
+    slist.forEach(async (sdata) => {
       sdata.expiration = timestampTotime(sdata.expiration);
-      if(sdata.expiration < nowd){
+      if (sdata.expiration < nowd) {
         await db.collection(COLLECTION_NAME).doc(sdata.id).delete();
       }
-    })
+    });
 
-    const cdata = slist.find(sdata => sdata.id == req.query.id);
-    if(cdata && cdata.expiration > nowd){
+    const cdata = slist.find((sdata) => sdata.id == req.query.id);
+    if (cdata && cdata.expiration > nowd) {
       res.status(200).json(cdata);
-    }else{
+    } else {
       res.status(200).send('');
     }
-
-  }else if(req.method === 'DELETE') {
+  } else if (req.method === 'DELETE') {
     const sidh = sha512_256(req.query.id);
     await db.collection(COLLECTION_NAME).doc(sidh).delete();
     res.status(200).send('');
-
   } else {
     res.status(400).send('');
   }
-
-  
 }

@@ -26,7 +26,8 @@ h2 {
   margin: 1rem 0 0;
 }
 
-h2:before, h2:after {
+h2:before,
+h2:after {
   content: '';
   position: absolute;
   top: 50%;
@@ -37,30 +38,30 @@ h2:before, h2:after {
 }
 
 h2:before {
-  left:0;
+  left: 0;
 }
 h2:after {
   right: 0;
 }
 
-ol{
-  counter-reset:list;
-  list-style-type:none;
+ol {
+  counter-reset: list;
+  list-style-type: none;
   font: 14px/1.6 'arial narrow', sans-serif;
-  padding:0;
+  padding: 0;
 }
-ol li{
-  position:relative;
+ol li {
+  position: relative;
   padding: 0 0 0 20px;
   margin: 7px 0 7px 0px;
   font-weight: bold;
-  font-size:14px;
+  font-size: 14px;
   line-height: 30px;
   border-bottom: dashed 1px #1dabfd;
 }
-ol li:before{
+ol li:before {
   counter-increment: list;
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   left: 0px;

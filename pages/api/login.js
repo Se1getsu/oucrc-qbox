@@ -18,38 +18,36 @@ export default async function handler(req, res) {
   const db = getFirestore();
 
   if (req.method === 'GET') {
-
     //パスハッシュ取得
-    const snapshot = await db.collection(SYS_COLLECTION_NAME).doc("login").get();
+    const snapshot = await db
+      .collection(SYS_COLLECTION_NAME)
+      .doc('login')
+      .get();
     const passhash = snapshot.data().passhash;
 
-    if(req.query.pass && sha512(req.query.pass) == passhash){
-
+    if (req.query.pass && sha512(req.query.pass) == passhash) {
       //セッションID生成
-      const lets="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./"
-      const len=20;
-      const randomLet = () => lets[Math.floor(Math.random()*lets.length)];
+      const lets =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./';
+      const len = 20;
+      const randomLet = () => lets[Math.floor(Math.random() * lets.length)];
       const sid = Array.from(Array(len)).map(randomLet).join('');
       const sidh = sha512_256(sid);
 
       //データベースに保存
       const docRef = db.collection(SESSION_COLLECTION_NAME).doc(sidh);
       const expiration = new Date();
-      expiration.setHours(expiration.getHours()+3);
+      expiration.setHours(expiration.getHours() + 3);
       docRef.set({
-        expiration: expiration
+        expiration: expiration,
       });
 
       //セッションIDを提供
       res.status(200).send(sid);
-
-    }else{
+    } else {
       res.status(200).send('');
     }
-
   } else {
     res.status(400).send('');
   }
-
-  
 }

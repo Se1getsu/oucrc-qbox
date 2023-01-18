@@ -27,28 +27,29 @@ export default async function handler(req, res) {
     };
     docRef.set(insertData);
 
-    const message = "https://oucrc-qbox.vercel.app に新しい質問が投稿されました。\n```" + req.body.question + "```";
+    const message =
+      'https://oucrc-qbox.vercel.app に新しい質問が投稿されました。\n```' +
+      req.body.question +
+      '```';
     await sendToSlack(message);
 
     res.status(200).send('');
-
   } else if (req.method === 'GET') {
     const snapshot = await db.collection(COLLECTION_NAME).get();
     const qalist = snapshot.docs.map((value, index, array) => {
-      return {id: value.id, ...value.data()};
-    })
-    qalist.sort((a,b) => b.date-a.date);
-    qalist.forEach(qadata => {
+      return { id: value.id, ...value.data() };
+    });
+    qalist.sort((a, b) => b.date - a.date);
+    qalist.forEach((qadata) => {
       const date = timestampTotime(qadata.date);
-      qadata.date = strftime(date, "%Y-%m-%d %H:%M:%S");
-    })
+      qadata.date = strftime(date, '%Y-%m-%d %H:%M:%S');
+    });
     res.status(200).json(qalist);
-
   } else if (req.method === 'PATCH') {
     const sdata = await getSessionData(req.body.sid);
-    if(!sdata){
-      res.status(200).send('No permission.')
-    }else{
+    if (!sdata) {
+      res.status(200).send('No permission.');
+    } else {
       const docRef = db.collection(COLLECTION_NAME).doc(req.body.qid);
       const snapshot = await docRef.get();
       const data = snapshot.data();
@@ -56,10 +57,7 @@ export default async function handler(req, res) {
       docRef.set(data);
       res.status(200).send('');
     }
-
   } else {
     res.status(400).send('');
   }
-
-  
 }

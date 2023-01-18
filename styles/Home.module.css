@@ -65,15 +65,18 @@
 
 .pagebg {
   background-color: #ddecd1;
-  background-image:
-   linear-gradient(-90deg, rgba(192, 224, 216, 0.5) 50%, transparent 50%),
+  background-image: linear-gradient(
+      -90deg,
+      rgba(192, 224, 216, 0.5) 50%,
+      transparent 50%
+    ),
     linear-gradient(rgba(218, 226, 197, 0.5) 50%, transparent 50%);
   background-size: 6px 6px;
 }
 
 .appbar {
   padding: 0 2rem;
-  background: #969B11 !important;
+  background: #969b11 !important;
   color: #fff !important;
 }
 
@@ -90,7 +93,7 @@
   background-color: #b89e7c;
   margin: 1rem auto 0.5rem;
   width: 26.4rem;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
 .qsheetbg.hov:hover {
@@ -123,7 +126,7 @@
 
   .appbar {
     padding: 0;
-    background: #969B11 !important;
+    background: #969b11 !important;
     color: #fff !important;
   }
 
@@ -137,7 +140,7 @@
     width: calc(100% - 10px);
     max-width: 26.4rem;
   }
-  
+
   .qsheetbg {
     background-color: #b89e7c;
     margin: 1rem auto 0.5rem;
@@ -153,29 +156,29 @@
     width: -webkit-calc(100% - 1.4rem);
     width: calc(100% - 1.4rem);
     min-height: 10em;
-    display: flex; 
+    display: flex;
     flex-direction: column;
     justify-content: center;
   }
 }
 
-
-
 .ogpqsheetbg {
   background-color: #b89e7c;
   margin: 1rem auto 0.5rem;
-  width: calc(26.4rem *1200/528);
-  height: calc(26.4rem *630/528);
+  width: calc(26.4rem * 1200 / 528);
+  height: calc(26.4rem * 630 / 528);
 }
 
 .ogpqsheetTextfield {
   background: #f5eedc;
-  margin: calc(0.7rem *1200/528) calc(0.7rem *1200/528) 0 !important;
-  padding: calc(1rem *1200/528) calc(1rem *1200/528) 0.8rem !important;
-  border-radius: calc(20px *1200/528);
-  width: calc(26.4rem *1200/528 - 1.4rem *1200/528);
-  min-height: calc(26.4rem *630/528 - 0.7rem *1200/528 - 26.4rem *45/528 *1200/528);
-  display: flex; 
+  margin: calc(0.7rem * 1200 / 528) calc(0.7rem * 1200 / 528) 0 !important;
+  padding: calc(1rem * 1200 / 528) calc(1rem * 1200 / 528) 0.8rem !important;
+  border-radius: calc(20px * 1200 / 528);
+  width: calc(26.4rem * 1200 / 528 - 1.4rem * 1200 / 528);
+  min-height: calc(
+    26.4rem * 630 / 528 - 0.7rem * 1200 / 528 - 26.4rem * 45 / 528 * 1200 / 528
+  );
+  display: flex;
   flex-direction: column;
   justify-content: center;
 }
@@ -183,5 +186,5 @@
 .ogpqsheetbottom {
   display: flex;
   align-items: center;
-  margin: 0 calc(0.3rem *1200/528) auto;
+  margin: 0 calc(0.3rem * 1200 / 528) auto;
 }
