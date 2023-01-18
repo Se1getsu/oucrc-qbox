@@ -1,8 +1,15 @@
 import { Pagination } from '@material-ui/lab';
 import { useState } from 'react';
 import QSheet from './QSheet';
+import { QA } from '@/types/qa';
 
-export default function QAList({ qaList, mode }) {
+export default function QAList({
+  qaList,
+  mode,
+}: {
+  qaList: QA[];
+  mode: 'answered' | 'unanswered';
+}) {
   const [page, setPage] = useState(1);
   const numofDisp = 20;
 
@@ -39,7 +46,7 @@ export default function QAList({ qaList, mode }) {
           (page - 1) * numofDisp,
           Math.min(page * numofDisp, exqaList.length)
         )
-        .map(({ id, date, question, qnswer }) => (
+        .map(({ id, question }) => (
           <QSheet key={id} text={question} href={'/q/' + id} />
         ))}
 

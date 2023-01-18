@@ -1,31 +1,32 @@
 import axios from 'axios';
 import { sha512_256 } from 'js-sha512';
-import { gettCookie, killCookie } from './util';
+import { NookieCtxReq, NookieCtxRes, gettCookie, killCookie } from './util';
+import { QA } from '@/types/qa';
 
 export async function getSortedQAList() {
-  const resp = await axios.get(process.env.BASE_URL + '/api/qas');
+  const resp = await axios.get<QA[]>(process.env.BASE_URL + '/api/qas');
   return resp.data;
 }
 
 export async function getAllQAIds() {
   const qaList = await getSortedQAList();
-  const idList = qaList.map((value, index, array) => {
+  const idList = qaList.map((value) => {
     return { params: { id: value.id } };
   });
   return idList;
 }
 
-export async function getQAData(id) {
+export async function getQAData(id: QA['id']) {
   const qaList = await getSortedQAList();
   return qaList.find((qaData) => qaData.id == id);
 }
 
-export async function getSid(pass) {
-  const resp = await axios.get('/api/login', { params: { pass: pass } });
+export async function getSid(pass: string) {
+  const resp = await axios.get('/api/login', { params: { pass } });
   return resp.data;
 }
 
-export async function getSessionData(id) {
+export async function getSessionData(id: string) {
   const idh = sha512_256(id);
   const resp = await axios.get(process.env.BASE_URL + '/api/session', {
     params: { id: idh },
@@ -33,14 +34,14 @@ export async function getSessionData(id) {
   return resp.data;
 }
 
-export async function deleteSession(id) {
+export async function deleteSession(id: string) {
   await axios.delete(process.env.BASE_URL + '/api/session', {
-    params: { id: id },
+    params: { id },
   });
 }
 
 //ログイン状態を必要とするページのgetServerSidePropsを代行
-export async function authProps(ctx, props) {
+export async function authProps(ctx: NookieCtxRes, props: Record<string, any>) {
   const cookie = gettCookie(ctx);
   const sid = cookie.sid;
   const sdata = sid ? await getSessionData(sid) : '';
@@ -48,7 +49,8 @@ export async function authProps(ctx, props) {
   if (sdata) {
     return { props: { sid, sdata, ...props } };
   } else {
-    killCookie('sid', ctx);
+    // TODO: reqとresの型が矛盾している状態を解決
+    killCookie('sid', ctx as NookieCtxReq);
     return {
       redirect: {
         permanent: false,

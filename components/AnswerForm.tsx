@@ -7,10 +7,10 @@ import { useRouter } from 'next/router';
 import SendIcon from '@material-ui/icons/Send';
 import styles from '../styles/Home.module.css';
 
-export default function AnswerForm({ sid, qid }) {
+export default function AnswerForm({ sid, qid }: { sid: string; qid: string }) {
   const [comment, setComment] = useState('');
   const router = useRouter();
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setComment(event.target.value);
   };
 

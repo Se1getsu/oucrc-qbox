@@ -1,8 +1,15 @@
 import styles from '../styles/Home.module.css';
 import { useSpring, animated } from '@react-spring/web';
 import Header from './Header';
+import { ReactNode } from 'react';
 
-export default function Layout({ children, sid }) {
+export default function Layout({
+  children,
+  sid,
+}: {
+  children: ReactNode;
+  sid: string;
+}) {
   const topColor = '#007602';
   const btmColor = '#2ee8a1';
 

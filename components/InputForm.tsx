@@ -42,7 +42,7 @@ export default function InputForm() {
     },
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setComment(event.target.value);
   };
 
