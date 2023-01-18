@@ -1,3 +1,4 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import ReactDOM from 'react-dom/server';
 const nodeHtmlToImage = require('node-html-to-image');
 const Jimp = require('jimp');
@@ -34,7 +35,7 @@ const styles = `
   h1 { margin: auto }
 `;
 
-const Content = ({ text }) => (
+const Content = ({ text }: { text: string }) => (
   <html>
     <head>
       <link rel="icon" href="/oucrc.ico" />
@@ -54,32 +55,40 @@ const Content = ({ text }) => (
   </html>
 );
 
-export default async (req, res) => {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const text = req.query.text ? req.query.text : '';
-  const props = { text };
-  const markup = ReactDOM.renderToStaticMarkup(<Content {...props} />);
-  const html = `<!doctype html>${markup}`;
+  if (typeof text === 'string') {
+    const props = { text };
+    const markup = ReactDOM.renderToStaticMarkup(<Content {...props} />);
+    const html = `<!doctype html>${markup}`;
 
-  if (0) {
-    res.setHeader('Content-Type', 'text/html');
-    res.end(html);
-    return;
+    // ????
+    if (process.env.OGP_DEBUG === 'true') {
+      res.setHeader('Content-Type', 'text/html');
+      res.end(html);
+      return;
+    }
+
+    const buffer = await nodeHtmlToImage({
+      html: html,
+      puppeteerArgs: {
+        defaultViewport: { width: 1200, height: 630 },
+      },
+    });
+
+    // なぜかbufferの縦横比が1200x630をオーバーしてしまうので、Jimpを使ってトリミング
+    const image = await Jimp.read(buffer);
+    const trimed = await image
+      .crop(0, 0, 1200, 630)
+      .getBufferAsync(Jimp.MIME_PNG);
+
+    res.setHeader('Cache-Control', 's-maxage=31536000, stale-while-revalidate');
+    res.setHeader('Content-Type', 'image/png');
+    res.end(trimed);
+  } else {
+    res.status(400).send('text should be one string');
   }
-
-  const buffer = await nodeHtmlToImage({
-    html: html,
-    puppeteerArgs: {
-      defaultViewport: { width: 1200, height: 630 },
-    },
-  });
-
-  // なぜかbufferの縦横比が1200x630をオーバーしてしまうので、Jimpを使ってトリミング
-  const image = await Jimp.read(buffer);
-  const trimed = await image
-    .crop(0, 0, 1200, 630)
-    .getBufferAsync(Jimp.MIME_PNG);
-
-  res.setHeader('Cache-Control', 's-maxage=31536000, stale-while-revalidate');
-  res.setHeader('Content-Type', 'image/png');
-  res.end(trimed);
-};
+}

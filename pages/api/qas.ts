@@ -1,13 +1,18 @@
 import { getSessionData } from '../../lib/posts';
 import { strftime, timestampTotime } from '../../lib/util';
 import { sendToSlack } from '../../lib/slack';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const { cert } = require('firebase-admin/app');
-const { getFirestore } = require('firebase-admin/firestore');
+import { cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 const serviceAccount = require('../../firebase'); //秘密鍵取得
-const admin = require('firebase-admin');
+import * as admin from 'firebase-admin';
+import { QA } from '@/types/qa';
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const COLLECTION_NAME = 'qas';
   //　初期化
   if (admin.apps.length === 0) {
@@ -36,13 +41,13 @@ export default async function handler(req, res) {
     res.status(200).send('');
   } else if (req.method === 'GET') {
     const snapshot = await db.collection(COLLECTION_NAME).get();
-    const qalist = snapshot.docs.map((value, index, array) => {
+    const qalist = snapshot.docs.map((value) => {
       return { id: value.id, ...value.data() };
-    });
-    qalist.sort((a, b) => b.date - a.date);
+    }) as QA[];
+    qalist.sort((a, b) => b.date.getTime() - a.date.getTime());
     qalist.forEach((qadata) => {
-      const date = timestampTotime(qadata.date);
-      qadata.date = strftime(date, '%Y-%m-%d %H:%M:%S');
+      const date = timestampTotime(qadata.date.getTime());
+      qadata.date = new Date(strftime(date, '%Y-%m-%d %H:%M:%S'));
     });
     res.status(200).json(qalist);
   } else if (req.method === 'PATCH') {
@@ -52,10 +57,14 @@ export default async function handler(req, res) {
     } else {
       const docRef = db.collection(COLLECTION_NAME).doc(req.body.qid);
       const snapshot = await docRef.get();
-      const data = snapshot.data();
-      data.answer = req.body.answer;
-      docRef.set(data);
-      res.status(200).send('');
+      const data = snapshot.data() as QA;
+      if (data) {
+        data.answer = req.body.answer;
+        docRef.set(data);
+        res.status(200).send('');
+      } else {
+        res.status(404).send('Not found');
+      }
     }
   } else {
     res.status(400).send('');

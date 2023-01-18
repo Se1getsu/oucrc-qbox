@@ -2,13 +2,20 @@ import Head from 'next/head';
 import { authProps, getSortedQAList } from '../lib/posts';
 import QAList from '../components/QAList';
 import Layout from '../components/Layout';
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+  NextPage,
+} from 'next';
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const qaList = await getSortedQAList();
   return await authProps(ctx, { qaList });
 }
 
-export default function Home({ sid, qaList }) {
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+const Answer: NextPage<Props> = ({ sid, qaList }) => {
   return (
     <Layout sid={sid}>
       <Head>
@@ -23,4 +30,6 @@ export default function Home({ sid, qaList }) {
       <QAList qaList={qaList} mode={'unanswered'} />
     </Layout>
   );
-}
+};
+
+export default Answer;

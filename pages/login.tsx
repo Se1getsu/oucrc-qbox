@@ -7,8 +7,9 @@ import { useRouter } from 'next/router';
 import { Alert } from '@material-ui/lab';
 import { choice, gettCookie, settCookie } from '../lib/util';
 import Layout from '../components/Layout';
+import { GetServerSidePropsContext } from 'next';
 
-export async function getServerSideProps(ctx) {
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   const cookie = gettCookie(ctx);
   const sid = cookie.sid;
   const sdata = sid ? await getSessionData(sid) : '';
@@ -26,9 +27,9 @@ export async function getServerSideProps(ctx) {
   }
 }
 
-export default function Home() {
+export default function Login() {
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const errorTexts = [
     'パスワードが全然違います。',
@@ -43,11 +44,11 @@ export default function Home() {
     '入力されたパスワードにログインの意思を感じられません。',
   ];
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     if (!password) {
       setError('パスワードを入力して下さい。');
       return;

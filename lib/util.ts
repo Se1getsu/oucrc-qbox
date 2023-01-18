@@ -56,8 +56,8 @@ export function strftime(date: Date, format: string) {
   return format;
 }
 
-export function timestampTotime(timestamp: number) {
-  const date = new Date(timestamp * 1000);
+export function timestampTotime(timestamp?: Date | number) {
+  const date = new Date(timestamp ?? 0 * 1000);
   date.setFullYear(date.getFullYear() - 1969);
   return date;
 }

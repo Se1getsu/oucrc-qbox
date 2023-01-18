@@ -1,4 +1,4 @@
-module.exports = {
+const firebase = {
   type: 'service_account',
   project_id: process.env.FIREBASE_PROJECT_ID,
   private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
@@ -10,3 +10,4 @@ module.exports = {
   auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
   client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
 };
+export default firebase;

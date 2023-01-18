@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import InputForm from '../components/InputForm.js';
+import InputForm from '../components/InputForm.jsx';
 import { getSortedQAList } from '../lib/posts';
 import QAList from '../components/QAList';
 import Layout from '../components/Layout';
+import { InferGetServerSidePropsType, NextPage } from 'next';
 
 /*
 styles.card は質問の一覧表示の所で使えそう。
@@ -14,7 +15,9 @@ export async function getServerSideProps() {
   return { props: { qaList } };
 }
 
-export default function Home({ qaList }) {
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+const Home: NextPage<Props> = ({ qaList }) => {
   return (
     <Layout>
       <Head>
@@ -67,4 +70,6 @@ export default function Home({ qaList }) {
       <QAList qaList={qaList} mode={'answered'} />
     </Layout>
   );
-}
+};
+
+export default Home;

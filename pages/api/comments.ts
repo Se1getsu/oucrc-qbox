@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next';
 import { sendToSlack } from '../../lib/slack';
 
-module.exports = async (req, res) => {
+module.exports = async (req: NextApiRequest, res: NextApiResponse) => {
   const { message } = req.body;
 
   if (!message) {

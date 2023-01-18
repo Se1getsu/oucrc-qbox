@@ -8,7 +8,7 @@ export default function Layout({
   sid,
 }: {
   children: ReactNode;
-  sid: string;
+  sid?: string;
 }) {
   const topColor = '#007602';
   const btmColor = '#2ee8a1';

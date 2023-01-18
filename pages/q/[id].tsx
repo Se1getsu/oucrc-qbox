@@ -4,22 +4,33 @@ import Layout from '../../components/Layout';
 import QSheet from '../../components/QSheet';
 import { authProps, getQAData } from '../../lib/posts';
 import styles from '../../styles/Home.module.css';
+import {
+  GetServerSidePropsContext,
+  InferGetServerSidePropsType,
+  NextPage,
+} from 'next';
 
-export async function getServerSideProps(ctx) {
-  const qaData = await getQAData(ctx.query.id);
-  //存在しないIDの場合
-  if (!qaData) {
-    return { props: {} };
-    //回答済みの場合
-  } else if (qaData.answer) {
-    return { props: { qaData } };
-    //未回答の場合
+export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  if (typeof ctx.query.id === 'string') {
+    const qaData = await getQAData(ctx.query.id);
+    //存在しないIDの場合
+    if (!qaData) {
+      return { props: {} };
+      //回答済みの場合
+    } else if (qaData.answer) {
+      return { props: { qaData } };
+      //未回答の場合
+    } else {
+      return authProps(ctx, { qaData });
+    }
   } else {
-    return authProps(ctx, { qaData });
+    return { props: {} as never };
   }
 }
 
-export default function Post({ sid, qaData }) {
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
+
+const Post: NextPage<Props> = ({ sid, qaData }) => {
   if (!qaData) {
     return (
       <Layout sid={sid}>
@@ -66,7 +77,7 @@ export default function Post({ sid, qaData }) {
         <h2>質問</h2>
         <QSheet text={qaData.question} />（{qaData.date}）<h2>回答</h2>
         <p className={styles.qwidth}>
-          {qaData.answer.split('\n').map((textline) => (
+          {qaData.answer.split('\n').map((textline: string) => (
             <>
               {textline}
               <br />
@@ -89,4 +100,6 @@ export default function Post({ sid, qaData }) {
       </Layout>
     );
   }
-}
+};
+
+export default Post;

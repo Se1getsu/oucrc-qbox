@@ -1,11 +1,15 @@
-import sha512, { sha512_256 } from 'js-sha512';
+import { sha512, sha512_256 } from 'js-sha512';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 const { cert } = require('firebase-admin/app');
 const { getFirestore } = require('firebase-admin/firestore');
 const serviceAccount = require('../../firebase'); //秘密鍵取得
 const admin = require('firebase-admin');
 
-export default async function handler(req, res) {
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const SYS_COLLECTION_NAME = 'system';
   const SESSION_COLLECTION_NAME = 'session';
   //　初期化
@@ -17,7 +21,7 @@ export default async function handler(req, res) {
 
   const db = getFirestore();
 
-  if (req.method === 'GET') {
+  if (req.method === 'GET' && typeof req.query.pass === 'string') {
     //パスハッシュ取得
     const snapshot = await db
       .collection(SYS_COLLECTION_NAME)

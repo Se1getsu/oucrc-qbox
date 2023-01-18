@@ -1,30 +1,31 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  DocumentContext,
+} from 'next/document';
 import { ServerStyleSheets } from '@material-ui/styles';
+import React from 'react';
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
 
-    try {
-      ctx.renderPage = () =>
-        originalRenderPage({
-          enhanceApp: (App) => (props) => sheet.collect(<App {...props} />),
-        });
+    ctx.renderPage = () =>
+      originalRenderPage({
+        enhanceApp: (App) => (props) => sheet.collect(<App {...props} />),
+      });
 
-      const initialProps = await Document.getInitialProps(ctx);
-      return {
-        ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            {sheet.getStyleElement()}
-          </>
-        ),
-      };
-    } finally {
-      ctx.renderPage(sheet);
-    }
+    const initialProps = await Document.getInitialProps(ctx);
+    return {
+      ...initialProps,
+      styles: [
+        ...React.Children.toArray(initialProps.styles),
+        sheet.getStyleElement(),
+      ],
+    };
   }
   render() {
     return (

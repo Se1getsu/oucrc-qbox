@@ -4,11 +4,13 @@ import { deleteSession } from '../lib/posts';
 import { killCookie } from '../lib/util';
 import styles from '../styles/Home.module.css';
 
-export default function Header({ sid }) {
+export default function Header({ sid }: { sid?: string }) {
   const router = useRouter();
   const handleLogout = async () => {
     killCookie('sid');
-    deleteSession(sid);
+    if (sid) {
+      deleteSession(sid);
+    }
     router.reload();
   };
 

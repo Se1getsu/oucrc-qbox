@@ -7,7 +7,7 @@ import styles from '../styles/Home.module.css';
 export default function Test() {
   const text = 'こんなページは存在しない。\n分かった？';
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: any) => {
     console.log('TEST処理開始');
 
     // const comment = "Hello, second world!";
@@ -54,11 +54,13 @@ export default function Test() {
             src="/images/oucrc-logo.webp"
             width={(36 * 1200) / 528}
             height={(36 * 1200) / 528}
+            alt="OUCRC"
           />
           <Image
             src="/images/oucrc-label.webp"
             width={(((24 * 1188) / 160) * 1200) / 528}
             height={(24 * 1200) / 528}
+            alt="OUCRC"
           />
         </div>
       </div>
