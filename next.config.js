@@ -13,7 +13,7 @@ module.exports = nextConfig;
 function loadEnv(appEnv = 'local') {
   try {
     const env = {
-      ...require(`./env/.env.${appEnv}`),
+      ...require(`./env/env.${appEnv}`),
       NEXT_PUBLIC_APP_ENV: appEnv,
     };
 

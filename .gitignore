@@ -32,5 +32,6 @@ yarn-error.log*
 .vercel
 
 # 環境変数
+/env/env.*
 /env/.env.*
-!/env/.env.local.example.json
+!/env/env.local.example.json
