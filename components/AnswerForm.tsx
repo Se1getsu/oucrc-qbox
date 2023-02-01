@@ -2,12 +2,11 @@ import { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
-import { killCookie } from '../lib/util';
 import { useRouter } from 'next/router';
 import SendIcon from '@material-ui/icons/Send';
 import styles from '../styles/Home.module.css';
 
-export default function AnswerForm({ sid, qid }: { sid: string; qid: string }) {
+export default function AnswerForm({ qid }: { qid: string }) {
   const [comment, setComment] = useState('');
   const router = useRouter();
   const handleChange = (event: any) => {
@@ -17,13 +16,11 @@ export default function AnswerForm({ sid, qid }: { sid: string; qid: string }) {
   const postComment = async () => {
     if (!comment) return;
     const resp = await axios.patch('/api/qas', {
-      sid,
       qid,
       answer: comment,
     });
 
     if (resp.data == 'No permission.') {
-      killCookie('sid');
       router.replace('/login');
     } else {
       router.reload();

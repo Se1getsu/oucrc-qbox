@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
-import InputForm from '../components/InputForm.jsx';
+import InputForm from '../components/InputForm';
 import { getSortedQAList } from '../lib/posts';
 import QAList from '../components/QAList';
 import Layout from '../components/Layout';

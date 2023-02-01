@@ -4,5 +4,6 @@
 
 ```sh
 mkdir env
+mkdir -p firestore/exports
 touch ./env/.env.local.json
 ```

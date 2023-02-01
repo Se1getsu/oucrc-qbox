@@ -1,18 +1,11 @@
 import { AppBar, Box, Button, Link, Toolbar } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import { deleteSession } from '../lib/posts';
-import { killCookie } from '../lib/util';
+import { useSession, signOut } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
 
-export default function Header({ sid }: { sid?: string }) {
+export default function Header() {
   const router = useRouter();
-  const handleLogout = async () => {
-    killCookie('sid');
-    if (sid) {
-      deleteSession(sid);
-    }
-    router.reload();
-  };
+  const { data: session } = useSession();
 
   return (
     <div style={{ textAlign: 'right' }}>
@@ -51,9 +44,9 @@ export default function Header({ sid }: { sid?: string }) {
             回答する
           </Button>
 
-          {sid && (
+          {session && (
             <Box justifyContent="flex-end" style={{ flexGrow: '1' }}>
-              <Link color="inherit" onClick={handleLogout}>
+              <Link color="inherit" onClick={() => signOut()}>
                 ログアウトする
               </Link>
             </Box>

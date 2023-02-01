@@ -2,7 +2,7 @@ import Head from 'next/head';
 import AnswerForm from '../../components/AnswerForm';
 import Layout from '../../components/Layout';
 import QSheet from '../../components/QSheet';
-import { authProps, getQAData } from '../../lib/posts';
+import { getQAData } from '../../lib/posts';
 import styles from '../../styles/Home.module.css';
 import {
   GetServerSidePropsContext,
@@ -21,7 +21,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
       return { props: { qaData } };
       //未回答の場合
     } else {
-      return authProps(ctx, { qaData });
+      return { props: { qaData } };
     }
   } else {
     return { props: {} as never };
@@ -30,10 +30,10 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Post: NextPage<Props> = ({ sid, qaData }) => {
+const Post: NextPage<Props> = ({ qaData }) => {
   if (!qaData) {
     return (
-      <Layout sid={sid}>
+      <Layout>
         <Head>
           <title>電算研質問箱 - エラー</title>
           <meta charSet="utf-8" />
@@ -47,7 +47,7 @@ const Post: NextPage<Props> = ({ sid, qaData }) => {
     );
   } else if (qaData.answer) {
     return (
-      <Layout sid={sid}>
+      <Layout>
         <Head>
           <title>電算研質問箱 - 回答閲覧</title>
           <link rel="icon" href="/oucrc.ico" />
@@ -88,7 +88,7 @@ const Post: NextPage<Props> = ({ sid, qaData }) => {
     );
   } else {
     return (
-      <Layout sid={sid}>
+      <Layout>
         <Head>
           <title>電算研質問箱 - 回答入力</title>
           <meta charSet="utf-8" />
@@ -96,7 +96,7 @@ const Post: NextPage<Props> = ({ sid, qaData }) => {
         </Head>
         <h2>質問</h2>
         <QSheet text={qaData.question} />（{qaData.date}）<h2>回答</h2>
-        <AnswerForm sid={sid} qid={qaData.id} />
+        <AnswerForm qid={qaData.id} />
       </Layout>
     );
   }

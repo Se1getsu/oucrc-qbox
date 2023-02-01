@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { authProps, getSortedQAList } from '../lib/posts';
+import { getSortedQAList } from '../lib/posts';
 import QAList from '../components/QAList';
 import Layout from '../components/Layout';
 import {
@@ -7,17 +7,29 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
+import { getServerSession } from 'next-auth/next';
+import { authOptions } from './api/auth/[...nextauth]';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
   const qaList = await getSortedQAList();
-  return await authProps(ctx, { qaList });
+  return { props: { qaList } };
 }
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 
-const Answer: NextPage<Props> = ({ sid, qaList }) => {
+const Answer: NextPage<Props> = ({ qaList }) => {
   return (
-    <Layout sid={sid}>
+    <Layout>
       <Head>
         <title>電算研質問箱 - 回答</title>
         <meta charSet="utf-8" />

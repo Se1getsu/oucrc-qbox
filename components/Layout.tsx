@@ -3,13 +3,7 @@ import { useSpring, animated } from '@react-spring/web';
 import Header from './Header';
 import { ReactNode } from 'react';
 
-export default function Layout({
-  children,
-  sid,
-}: {
-  children: ReactNode;
-  sid?: string;
-}) {
+export default function Layout({ children }: { children: ReactNode }) {
   const topColor = '#007602';
   const btmColor = '#2ee8a1';
 
@@ -39,7 +33,7 @@ export default function Layout({
   return (
     <animated.div style={sptyle}>
       <div className={styles.container}>
-        <Header sid={sid} />
+        <Header />
 
         <div className={styles.pagebg}>
           <main className={styles.main}>{children}</main>
