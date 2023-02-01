@@ -3,10 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "FIRESTORE_EMULATOR_HOST=localhost:8080 next dev",
+    "dev:prod": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc -noEmit",
+    "firebase:serve": "firebase emulators:start --only firestore --import=./firestore/exports --export-on-exit",
+    "firebase:deploy:rules": "firebase deploy --only firestore:rules"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
@@ -16,23 +20,29 @@
     "@react-spring/web": "^9.4.5",
     "@slack/bolt": "^3.12.2",
     "@slack/webhook": "^6.1.0",
+    "@vercel/og": "^0.0.27",
     "axios": "^0.27.2",
     "chrome-aws-lambda": "^10.1.0",
-    "firebase": "^8.6.1",
+    "dayjs": "^1.11.7",
     "firebase-admin": "^11.0.0",
     "jimp": "^0.16.1",
     "js-sha512": "^0.8.0",
-    "next": "12.1.6",
+    "next": "12.2.6",
     "next-auth": "^4.5.0",
     "node-html-to-image": "^3.2.4",
     "nookies": "^2.5.2",
     "playwright-aws-lambda": "^0.8.0",
     "playwright-core": "^1.23.1",
-    "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "typescript": "^4.9.4"
   },
   "devDependencies": {
+    "@types/node": "^18.11.18",
+    "@types/react": "^17.0.52",
+    "@types/react-dom": "^17.0.18",
     "eslint": "8.17.0",
-    "eslint-config-next": "12.1.6"
+    "eslint-config-next": "12.1.6",
+    "prettier": "^2.8.3"
   }
 }

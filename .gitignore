@@ -32,4 +32,15 @@ yarn-error.log*
 .vercel
 
 # 環境変数
-/env/env.local.json
+/env/env.*
+/env/.env.*
+!/env/env.local.example.json
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# firebase
+*.log
+ui-debug.log
+firestore/exports/
