@@ -9,6 +9,7 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from 'next';
+import { formatDate } from '@/lib/util';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   if (typeof ctx.query.id === 'string') {
@@ -65,7 +66,11 @@ const Post: NextPage<Props> = ({ qaData }) => {
           />
           <meta
             property="og:image"
-            content={'/api/ogp?text=' + encodeURI(qaData.question)}
+            content={
+              process.env.BASE_URL +
+              '/api/ogp?text=' +
+              encodeURI(qaData.question)
+            }
           />
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="岡大電算研質問箱" />
@@ -75,15 +80,14 @@ const Post: NextPage<Props> = ({ qaData }) => {
           />
         </Head>
         <h2>質問</h2>
-        <QSheet text={qaData.question} />（{qaData.date}）<h2>回答</h2>
-        <p className={styles.qwidth}>
-          {qaData.answer.split('\n').map((textline: string) => (
-            <>
-              {textline}
-              <br />
-            </>
-          ))}
-        </p>
+        <QSheet text={qaData.question} />（{formatDate(qaData.date)}）
+        <h2>回答</h2>
+        <p
+          className={styles.qwidth}
+          dangerouslySetInnerHTML={{
+            __html: qaData.answer.replace(/\n/g, '<br>'),
+          }}
+        />
       </Layout>
     );
   } else {
@@ -95,7 +99,8 @@ const Post: NextPage<Props> = ({ qaData }) => {
           <link rel="icon" href="/oucrc.ico" />
         </Head>
         <h2>質問</h2>
-        <QSheet text={qaData.question} />（{qaData.date}）<h2>回答</h2>
+        <QSheet text={qaData.question} />（{formatDate(qaData.date)}）
+        <h2>回答</h2>
         <AnswerForm qid={qaData.id} />
       </Layout>
     );

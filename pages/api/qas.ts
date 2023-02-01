@@ -1,4 +1,3 @@
-import { strftime, timestampTotime } from '../../lib/util';
 import { sendToSlack } from '../../lib/slack';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth/next';
@@ -7,6 +6,7 @@ import { getFirestore } from 'firebase-admin/firestore';
 import serviceAccount from '../../lib/firebase-service-account'; //秘密鍵取得
 import * as admin from 'firebase-admin';
 import { QA } from '@/types/qa';
+import { qaConverter } from '@/lib/posts';
 
 export default async function handler(
   req: NextApiRequest,
@@ -26,7 +26,7 @@ export default async function handler(
   if (req.method === 'POST') {
     const docRef = db.collection(COLLECTION_NAME).doc();
     const insertData = {
-      date: new Date(),
+      date: admin.firestore.FieldValue.serverTimestamp(),
       question: req.body.question,
       answer: req.body.answer,
     };
@@ -40,17 +40,19 @@ export default async function handler(
 
     res.status(200).send('');
   } else if (req.method === 'GET') {
-    const snapshot = await db.collection(COLLECTION_NAME).get();
+    const snapshot = await db
+      .collection(COLLECTION_NAME)
+      .withConverter(qaConverter)
+      .get();
     const qalist = snapshot.docs.map((value) => {
-      return { id: value.id, ...value.data() };
+      return value.data();
     }) as QA[];
     if (qalist.length > 0) {
-      qalist.sort((a, b) => b.date.getTime() - a.date.getTime());
-      qalist.forEach((qadata) => {
-        if (qadata.date) {
-          const date = timestampTotime(qadata.date.getTime());
-          qadata.date = new Date(strftime(date, '%Y-%m-%d %H:%M:%S'));
+      qalist.sort((a, b) => {
+        if (a.date && b.date) {
+          return b.date.getTime() - a.date.getTime();
         }
+        return 0;
       });
     }
     res.status(200).json(qalist);

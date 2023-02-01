@@ -1,5 +1,27 @@
 import axios from 'axios';
-import { QA } from '@/types/qa';
+import { QA, QAOnFirestore } from '@/types/qa';
+import { firestore } from 'firebase-admin';
+
+/**
+ * dateをJSのDateに変換する
+ */
+export const qaConverter = {
+  fromFirestore: function (
+    snapshot: firestore.QueryDocumentSnapshot<QAOnFirestore>
+  ): QA {
+    const { date: dateTimestamp, ...data } = snapshot.data();
+    const date = dateTimestamp.toDate();
+    return {
+      ...data,
+      // IDはここで付ける
+      id: snapshot.id,
+      date,
+    };
+  },
+  toFirestore: function (data: QA): firestore.DocumentData {
+    return data;
+  },
+};
 
 export async function getSortedQAList() {
   const resp = await axios.get<QA[]>(process.env.BASE_URL + '/api/qas');

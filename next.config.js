@@ -3,6 +3,9 @@ loadEnv(process.env.APP_ENV);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    BASE_URL: process.env.BASE_URL, // metaタグ等でクライアントサイドへの露出が必要
+  },
 };
 
 module.exports = nextConfig;
@@ -20,7 +23,6 @@ function loadEnv(appEnv = 'local') {
     process.env[key] = value;
   });
 
-  process.env['BASE_URL'] = `http${appEnv === 'local' ? '' : 's'}://${
-    process.env.NEXT_PUBLIC_VERCEL_URL ?? 'localhost:3000'
-  }`;
+  process.env['BASE_URL'] =
+    process.env.NEXTAUTH_URL ?? 'https://' + process.env.VERCEL_URL;
 }

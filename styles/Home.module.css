@@ -97,6 +97,7 @@
 }
 
 .qsheetbg.hov:hover {
+  cursor: pointer;
   background-color: #987e5c;
 }
 

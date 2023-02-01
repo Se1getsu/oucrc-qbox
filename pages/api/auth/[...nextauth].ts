@@ -1,6 +1,5 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { FirestoreAdapter } from '@next-auth/firebase-adapter';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -9,12 +8,6 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET!,
     }),
   ],
-  adapter: FirestoreAdapter({
-    apiKey: process.env.FIREBASE_API_KEY,
-    appId: process.env.FIREBASE_APP_ID,
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.FIREBASE_PROJECT_ID,
-  }),
   callbacks: {
     /**
      * 環境変数でサインイン可能なユーザーを制限する
