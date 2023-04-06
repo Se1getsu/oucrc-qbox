@@ -39,7 +39,7 @@ const Answer: NextPage<Props> = ({ qaList }) => {
       <h1>質問に回答</h1>
 
       <p>質問が届いてる場合は、下に質問の一覧が表示されます。</p>
-      <QAList qaList={qaList} mode={'unanswered'} />
+      {qaList && <QAList qaList={qaList} mode={'unanswered'} />}
     </Layout>
   );
 };

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Button } from '@material-ui/core';
-import axios from 'axios';
 import QSheet from './QSheet';
 import SendIcon from '@material-ui/icons/Send';
 import { useSpring, animated, easings } from '@react-spring/web';
@@ -48,9 +47,12 @@ export default function InputForm() {
 
   const postComment = async () => {
     if (!comment) return;
-    await axios.post('/api/qas', {
-      question: comment,
-      answer: '',
+    await fetch(process.env.NEXTAUTH_URL + '/api/qas', {
+      method: 'POST',
+      body: JSON.stringify({
+        question: comment,
+        answer: '',
+      }),
     });
     setProg(1);
   };

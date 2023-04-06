@@ -57,7 +57,7 @@ const Post: NextPage<Props> = ({ qaData }) => {
             name="description"
             content={'岡大電算研への質問：' + qaData.question}
           />
-          <meta property="og:url" content={process.env.BASE_URL} />
+          <meta property="og:url" content={process.env.NEXTAUTH_URL} />
           <meta property="og:title" content="岡大電算研質問箱" />
           <meta property="og:type" content="website" />
           <meta
@@ -67,7 +67,7 @@ const Post: NextPage<Props> = ({ qaData }) => {
           <meta
             property="og:image"
             content={
-              process.env.BASE_URL +
+              process.env.NEXTAUTH_URL +
               '/api/ogp?text=' +
               encodeURI(qaData.question)
             }

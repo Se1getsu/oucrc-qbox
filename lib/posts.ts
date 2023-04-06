@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { QA, QAOnFirestore } from '@/types/qa';
 import { firestore } from 'firebase-admin';
 
@@ -24,13 +23,18 @@ export const qaConverter = {
 };
 
 export async function getSortedQAList() {
-  const resp = await axios.get<QA[]>(process.env.BASE_URL + '/api/qas');
-  return resp.data ?? null;
+  try {
+    const resp = await fetch(process.env.NEXTAUTH_URL + '/api/qas');
+    return (await resp.json()) as QA[];
+  } catch (e) {
+    console.error(e);
+    return null;
+  }
 }
 
 export async function getAllQAIds() {
   const qaList = await getSortedQAList();
-  const idList = qaList.map((value) => {
+  const idList = qaList?.map((value) => {
     return { params: { id: value.id } };
   });
   return idList ?? null;
@@ -38,5 +42,5 @@ export async function getAllQAIds() {
 
 export async function getQAData(id: QA['id']) {
   const qaList = await getSortedQAList();
-  return qaList.find((qaData) => qaData.id == id) ?? null;
+  return qaList?.find((qaData) => qaData.id == id) ?? null;
 }

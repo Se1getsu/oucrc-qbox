@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { Button } from '@material-ui/core';
-import axios from 'axios';
 import { useRouter } from 'next/router';
 import SendIcon from '@material-ui/icons/Send';
 import styles from '../styles/Home.module.css';
@@ -15,12 +14,16 @@ export default function AnswerForm({ qid }: { qid: string }) {
 
   const postComment = async () => {
     if (!comment) return;
-    const resp = await axios.patch('/api/qas', {
-      qid,
-      answer: comment,
+    const resp = await fetch(process.env.NEXTAUTH_URL + '/api/qas', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        qid,
+        answer: comment,
+      }),
     });
+    const data = await resp.json();
 
-    if (resp.data == 'No permission.') {
+    if (data == 'No permission.') {
       router.replace('/login');
     } else {
       router.reload();

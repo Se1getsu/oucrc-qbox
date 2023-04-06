@@ -7,6 +7,7 @@ import serviceAccount from '../../lib/firebase-service-account'; //秘密鍵取�
 import * as admin from 'firebase-admin';
 import { QA } from '@/types/qa';
 import { qaConverter } from '@/lib/posts';
+import { constants } from 'http2';
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,17 +25,22 @@ export default async function handler(
   const db = getFirestore();
 
   if (req.method === 'POST') {
+    // 新規作成
     const docRef = db.collection(COLLECTION_NAME).doc();
+    // TODO: bodyのバリデーション
+    const parsedBody = JSON.parse(req.body);
+    const { question, answer } = parsedBody;
     const insertData = {
       date: admin.firestore.FieldValue.serverTimestamp(),
-      question: req.body.question,
-      answer: req.body.answer,
+      question,
+      answer,
     };
     docRef.set(insertData);
 
     const message =
-      'https://oucrc-qbox.vercel.app に新しい質問が投稿されました。\n```' +
-      req.body.question +
+      process.env.NEXTAUTH_URL +
+      ' に新しい質問が投稿されました。\n```' +
+      parsedBody.question +
       '```';
     await sendToSlack(message);
 
@@ -57,22 +63,31 @@ export default async function handler(
     }
     res.status(200).json(qalist);
   } else if (req.method === 'PATCH') {
+    // 更新
     const session = await getServerSession(req, res, authOptions);
     if (!session) {
       res.status(200).send('No permission.');
     } else {
-      const docRef = db.collection(COLLECTION_NAME).doc(req.body.qid);
+      // TODO: bodyのバリデーション
+      const parsedBody = JSON.parse(req.body);
+      const { qid, answer } = parsedBody;
+      const docRef = db.collection(COLLECTION_NAME).doc(qid);
       const snapshot = await docRef.get();
       const data = snapshot.data() as QA;
+
       if (data) {
-        data.answer = req.body.answer;
-        docRef.set(data);
+        docRef.set(
+          {
+            answer,
+          },
+          { merge: true } // answerだけを更新する
+        );
         res.status(200).send('');
       } else {
         res.status(404).send('Not found');
       }
     }
   } else {
-    res.status(400).send('');
+    res.status(constants.HTTP_STATUS_METHOD_NOT_ALLOWED).send('Invalid method');
   }
 }

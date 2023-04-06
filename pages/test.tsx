@@ -11,7 +11,7 @@ export default function Test() {
     console.log('TEST処理開始');
 
     // const comment = "Hello, second world!";
-    // fetch('/api/comments', {
+    // fetch(process.env.NEXTAUTH_URL + '/api/comments', {
     //     method: 'POST',
     //     mode: 'same-origin',
     //     credentials: 'same-origin',

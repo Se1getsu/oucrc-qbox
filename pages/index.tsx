@@ -32,7 +32,7 @@ const Home: NextPage<Props> = ({ qaList }) => {
             'トップページでは既に回答がついた質問の一覧を見ることもできます。'
           }
         />
-        <meta property="og:url" content={process.env.BASE_URL} />
+        <meta property="og:url" content={process.env.NEXTAUTH_URL} />
         <meta property="og:title" content="岡大電算研質問箱" />
         <meta property="og:type" content="website" />
         <meta
@@ -41,7 +41,7 @@ const Home: NextPage<Props> = ({ qaList }) => {
         />
         <meta
           property="og:image"
-          content={process.env.BASE_URL + '/images/ogptop.png'}
+          content={process.env.NEXTAUTH_URL + '/images/ogptop.png'}
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="岡大電算研質問箱" />
@@ -67,7 +67,7 @@ const Home: NextPage<Props> = ({ qaList }) => {
       <InputForm />
 
       <h2>回答された質問</h2>
-      <QAList qaList={qaList} mode={'answered'} />
+      {qaList && <QAList qaList={qaList} mode={'answered'} />}
     </Layout>
   );
 };

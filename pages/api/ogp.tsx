@@ -26,7 +26,7 @@ export default function handler(req: NextRequest) {
               width: '100%',
               height: '100%',
               display: 'flex',
-              backgroundImage: `url(${process.env.BASE_URL}/images/ogpsheet.png)`,
+              backgroundImage: `url(${process.env.NEXTAUTH_URL}/images/ogpsheet.png)`,
             }}
           >
             <div
