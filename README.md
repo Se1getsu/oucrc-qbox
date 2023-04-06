@@ -14,3 +14,4 @@ touch ./env/.env.local.json
 
 - `NEXTAUTH_SECRET`: 認証の動作に必要なので、適宜生成すること
 - `NEXTAUTH_URL`: Vercelでは設定の必要がないが、ローカルやそれ以外の環境では必要
+
