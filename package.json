@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "FIRESTORE_EMULATOR_HOST=localhost:8080 next dev",
+    "dev": "next dev",
     "dev:prod": "next dev",
     "build": "next build",
     "start": "next start",
