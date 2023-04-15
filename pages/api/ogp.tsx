@@ -16,7 +16,7 @@ export default function handler(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const hasText = searchParams.has('text');
-    const text = hasText ? searchParams.get('text')?.slice(0, 100) : null;
+    const text = hasText ? searchParams.get('text') : null;
 
     if (typeof text === 'string') {
       return new ImageResponse(
@@ -31,33 +31,25 @@ export default function handler(req: NextRequest) {
           >
             <div
               style={{
-                margin: '32px 31px 32px 64px',
-                padding: '47px 46px 0',
-                borderRadius: '55px',
-                width: '1045px',
-                height: '450px',
+                padding: '0 18px 0',
+                position: 'absolute',
+                top: '32px',
+                left: '32px',
+                width: '1135px',
+                height: '496px',
+                borderRadius: '56px',
                 display: 'flex',
                 alignItems: 'center',
-                flexDirection: 'column',
-                gap: '60px',
-                justifyContent: 'center',
                 fontSize: '48px',
-                lineHeight: '1.2',
                 textAlign: 'center',
                 overflow: 'hidden',
               }}
             >
-              {/* うまいこと折り返してから、改行を考慮する */}
-              {(text.match(new RegExp(`.{1,21}`, 'g')) ?? [])
-                .map((t) => t ?? '')
-                .join('\n')
-                .split('\n')
-                .map((textline) => (
-                  <>
-                    {textline}
-                    <br />
-                  </>
-                ))}
+              {
+                text.length > 128
+                ? text.slice(0, 128) + '…'
+                : text
+              }
             </div>
           </div>
         ),
