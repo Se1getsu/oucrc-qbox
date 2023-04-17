@@ -40,6 +40,7 @@ export default function handler(req: NextRequest) {
                 borderRadius: '56px',
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 fontSize: '48px',
                 textAlign: 'center',
                 overflow: 'hidden',
